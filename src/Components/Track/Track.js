@@ -16,9 +16,8 @@ class Track extends React.Component {
     removeTrack() {
         this.props.onRemove(this.props.track);
     }
- 
-    render() {
-        // @Reviewer the "toggling" logic is not very elegant...is there a better way?
+
+    render() 
         return (
             <div className="Track">
                 <div className="Track-information">
