@@ -1,21 +1,31 @@
-import logo from './logo.svg';
+
 import React from 'react';
-import './App.css';
+import "./App.css";
 import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
-import { Spotify } from '../../util/spotify';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchResults: [],
-
-      playlistName: "",
-
-      playlistTracks: []
+      playlistName: "New Playlist Name",
+      playlistTracks: [],
+      playlists: [],
     };
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
+    this.getUserPlaylists = this.getUserPlaylists.bind(this);
+
+  search(term) {
+    Spotify.search(term).then((searchResults) => {
+      this.setState({ searchResults: searchResults });
+    });
+  }
 
   render() {
     return (
@@ -24,7 +34,10 @@ class App extends React.Component {
         <div className="App">
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
+            <SearchResults searchResults={this.state.searchResults} 
+            onSearch={this.search}
+            onAdd={this.addTrack}
+             />
             <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist}/>
           </div>
         </div>
