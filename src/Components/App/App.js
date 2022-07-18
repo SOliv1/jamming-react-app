@@ -45,7 +45,6 @@ class App extends React.Component {
         let trackURIs = this.state.playlistTracks.map(track => track.uri);
         if (this.state.playlistName && trackURIs && trackURIs.length > 0) {
 			Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
-				// TODO may be show a beautiful notification?
 				console.log(`new playlist with '${this.state.playlistName}' and ${trackURIs.length} songs successful saved.`);
 				this.setState({playlistName: 'New Playlist', playlistTracks: []});
 			});
@@ -57,6 +56,7 @@ class App extends React.Component {
             this.setState({searchResults: tracks}));
 	}
 
+ 
   render() {
     return (
       <div>
