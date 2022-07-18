@@ -14,23 +14,31 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    
     this.state = {
 
       searchResults: [],
       playlistName: "New Playlist Name",
       playlistTracks: [],
-      playlists: []};
+      playlists: []
+  };
+
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
+
   }
-}
+
+
  addTrack(track) {
-		if (this.state.playlistTracks.every(plTrack => plTrack.id !== track.id)) {
-			// @Reviewer is that the preferred way for building the new track list? I wasn't sure if it is allowed to modify playlistTracks directly,
-			// because it's part of the state.
-			let newPlaylistTracks = this.state.playlistTracks.concat(track);
-			this.setState({playlistTracks: newPlaylistTracks});
-		}
- }
-	
+		if( !this.state.playlistTracks.some(playlistTrack => (playlistTrack.id === track.id)) ) {
+      this.state.playlistTracks.push(track);
+      this.setState({playlistTracks : this.state.playlistTracks});
+    }
+  }
+
  removeTrack(track) {
 		let newPlaylistTracks = this.state.playlistTracks.filter(plTrack =>
 			plTrack.id !== track.id);
@@ -45,7 +53,7 @@ class App extends React.Component {
         let trackURIs = this.state.playlistTracks.map(track => track.uri);
         if (this.state.playlistName && trackURIs && trackURIs.length > 0) {
 			Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
-				console.log(`new playlist with '${this.state.playlistName}' and ${trackURIs.length} songs successful saved.`);
+				console.log(`new playlist with '${this.state.playlistName}' and ${trackURIs.length}successfully saved songs.`);
 				this.setState({playlistName: 'New Playlist', playlistTracks: []});
 			});
 		}
